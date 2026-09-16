@@ -1,0 +1,49 @@
+{
+  "lime": {
+    "source": "C:/Users/Nait/Downloads/ChatGPT Image 15 sept 2026, 10_46_41 a.m..png",
+    "left": 112,
+    "top": 39,
+    "width": 835,
+    "height": 1438
+  },
+  "orange": {
+    "source": "C:/Users/Nait/Downloads/ChatGPT Image 15 sept 2026, 10_45_35 a.m..png",
+    "left": 116,
+    "top": 40,
+    "width": 830,
+    "height": 1430
+  },
+  "blackberry": {
+    "source": "C:/Users/Nait/Downloads/ChatGPT Image 15 sept 2026, 10_40_45 a.m..png",
+    "left": 180,
+    "top": 30,
+    "width": 781,
+    "height": 1296
+  },
+  "watermelon": {
+    "source": "C:/Users/Nait/Downloads/ChatGPT Image 15 sept 2026, 10_47_52 a.m..png",
+    "left": 108,
+    "top": 26,
+    "width": 843,
+    "height": 1444
+  },
+  "hand": {
+    "source": "C:/Users/Nait/Downloads/ChatGPT Image 15 sept 2026, 10_34_15 a.m..png",
+    "left": 150,
+    "top": 29,
+    "width": 702,
+    "height": 1507
+  },
+  "limeBackground": {
+    "source": "C:/Users/Nait/Downloads/ChatGPT Image 15 sept 2026%2C 10_58_08 a.m._waifu2x_art_noise1_scale.webp"
+  },
+  "watermelonBackground": {
+    "source": "C:/Users/Nait/Downloads/ChatGPT Image 15 sept 2026%2C 10_54_46 a.m._waifu2x_art_noise1_scale.webp"
+  },
+  "orangeBackground": {
+    "source": "C:/Users/Nait/Downloads/ChatGPT Image 15 sept 2026%2C 10_58_03 a.m._waifu2x_art_noise1_scale.webp"
+  },
+  "blackberryBackground": {
+    "source": "C:/Users/Nait/Downloads/ChatGPT Image 15 sept 2026%2C 10_59_30 a.m._waifu2x_art_noise1_scale.webp"
+  }
+}

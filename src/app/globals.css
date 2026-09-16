@@ -1,0 +1,686 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-sans: var(--font-dm-sans);
+}
+
+:root {
+  color-scheme: light;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  font-family: var(--font-dm-sans), sans-serif;
+}
+button,
+a,
+input {
+  -webkit-tap-highlight-color: transparent;
+}
+button {
+  cursor: pointer;
+}
+button,
+a {
+  touch-action: manipulation;
+}
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+  outline: 3px solid #202532;
+  outline-offset: 5px;
+}
+button {
+  transition:
+    transform 180ms ease,
+    background-color 180ms ease;
+}
+button:active {
+  transform: scale(0.95);
+}
+body:has(dialog[open]) {
+  overflow: hidden;
+}
+/* Layers: artwork 0, copy 1, header 3; dialogs use the browser top layer. */
+.experience {
+  height: max(650px, 100dvh);
+}
+.site-header {
+  z-index: 3;
+  padding: clamp(24px, 3.7vh, 40px) 3.4%;
+}
+.wordmark {
+  font-size: clamp(30px, 2.7vw, 47px);
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: -2px;
+}
+.menu-button {
+  width: 38px;
+  height: 44px;
+}
+.menu-button svg {
+  width: 42px;
+  height: 42px;
+}
+.search-wrap {
+  width: clamp(260px, 27vw, 450px);
+}
+.search-form {
+  height: 44px;
+  padding-left: 18px;
+}
+.search-form input {
+  font-size: 13px;
+}
+.search-form input::placeholder {
+  color: #656974;
+  opacity: 1;
+}
+.search-form input::-webkit-search-cancel-button {
+  cursor: pointer;
+}
+.search-button {
+  width: 44px;
+  height: 44px;
+}
+.search-results {
+  top: 56px;
+  width: 100%;
+}
+.favorites-button {
+  width: 46px;
+  height: 46px;
+}
+.favorite-count {
+  width: 19px;
+  height: 19px;
+  top: -3px;
+  right: -3px;
+  font-size: 10px;
+}
+.flavor-stage {
+  position: relative;
+  height: 100%;
+  touch-action: pan-y;
+}
+.artwork-viewport {
+  position: absolute;
+  isolation: isolate;
+  z-index: 0;
+  inset: 0;
+  overflow: hidden;
+  background: var(--flavor-bg);
+}
+.artwork-layer {
+  position: absolute;
+  isolation: isolate;
+  inset: 0;
+  opacity: 0;
+}
+.artwork-layer.active {
+  opacity: 1;
+}
+.artwork {
+  object-fit: fill;
+}
+.blackberry-composition {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.artwork-layer-paper {
+  background: #fff;
+}
+/* Reference contour: broad curve with three rounded liquid drops. */
+.paper-clip-defs {
+  position: absolute;
+  pointer-events: none;
+}
+.paper-surface {
+  position: absolute;
+  inset: 0;
+  background: #8b42e7;
+}
+.blackberry-background {
+  object-fit: cover;
+  object-position: center;
+}
+.blackberry-scribbles {
+  object-fit: fill;
+}
+.blackberry-scribbles {
+  z-index: 1;
+}
+.blackberry-piece {
+  position: absolute;
+  z-index: var(--piece-depth);
+  top: var(--piece-y);
+  left: var(--piece-x);
+  width: var(--piece-width);
+  aspect-ratio: var(--piece-ratio);
+  transform-origin: var(--piece-pivot);
+  transform: rotate(var(--piece-rotation, 0deg));
+  pointer-events: none;
+}
+.blackberry-piece-hand {
+  top: auto;
+  bottom: 0;
+  left: 41%;
+  height: 77%;
+  width: auto;
+  aspect-ratio: var(--piece-ratio);
+}
+.shared-hand-composition {
+  pointer-events: none;
+}
+/* One reference canvas for hand and cup: both scale from the same height.
+   Keep the wrist on the bottom and center the complete grip on every viewport. */
+.grip-scene {
+  position: absolute;
+  isolation: isolate;
+  z-index: 2;
+  bottom: 0;
+  left: 50%;
+  height: 100%;
+  aspect-ratio: 1672 / 941;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+.grip-scene > .blackberry-composition {
+  inset: 0;
+  width: 100%;
+  transform: none;
+  overflow: visible;
+}
+/* Keep backgrounds, rear hand, cups and front fingers in separate sibling layers. */
+.hand-back {
+  z-index: 1;
+}
+.grip-cup-composition {
+  z-index: 2;
+  pointer-events: none;
+}
+.hand-front {
+  z-index: 3;
+}
+.grip-cup-layer {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+}
+.grip-cup-layer.active,
+.grip-cup-layer.departing {
+  opacity: 1;
+}
+.piece-motion {
+  position: absolute;
+  inset: 0;
+  transform-origin: var(--piece-pivot);
+}
+.background-out {
+  opacity: 1;
+  z-index: 0;
+}
+.background-in {
+  z-index: 1;
+  /* The mask is 3× the viewport: blend across 60% of the viewport width. */
+  --background-softness: 10%;
+  mask-image: linear-gradient(to right, #000 calc(50% - var(--background-softness)), transparent calc(50% + var(--background-softness)));
+  mask-size: 300% 100%;
+  mask-repeat: no-repeat;
+  animation: flavor-wipe var(--background-duration) linear both;
+}
+/* Keep fruit outside the paper wipe and behind both hand layers. */
+.flavor-fruit-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+.flavor-notes {
+  z-index: 1;
+}
+.fruit-set {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+}
+.fruit-flight { position: absolute; inset: 0; }
+.fruit-set {
+  --fruit-duration: calc(var(--flavor-duration) * .6);
+  --fruit-enter-delay: calc(var(--flavor-duration) * .18);
+}
+.fruit-set-outgoing .fruit-flight {
+  animation: fruit-converge var(--fruit-duration) cubic-bezier(.45, 0, .75, 1) both;
+}
+.fruit-set-incoming .fruit-flight {
+  animation: fruit-converge var(--fruit-duration) cubic-bezier(.45, 0, .75, 1) var(--fruit-enter-delay) reverse both;
+}
+.fruit-set-outgoing .piece-motion {
+  animation: fruit-shrink var(--fruit-duration) cubic-bezier(.45, 0, .75, 1) both;
+}
+.fruit-set-incoming .piece-motion {
+  animation: fruit-shrink var(--fruit-duration) cubic-bezier(.45, 0, .75, 1) var(--fruit-enter-delay) reverse both;
+}
+.fruit-flight .piece-motion { transform-origin: center; }
+@keyframes fruit-converge {
+  from { transform: translate(0, 0); }
+  to { transform: translate(var(--fruit-travel-x), var(--fruit-travel-y)); }
+}
+@keyframes fruit-shrink {
+  0% { transform: rotate(0deg) scale(1); opacity: 1; }
+  85% { opacity: 1; }
+  100% { transform: rotate(var(--fruit-spin)) scale(var(--fruit-small)); opacity: 0; }
+}
+.cup-exit {
+  transform-origin: var(--cup-grip-pivot);
+  animation: cup-fall var(--cup-exit-duration) linear both;
+}
+.cup-enter {
+  transform-origin: var(--cup-grip-pivot);
+  animation: cup-arrive var(--cup-enter-duration) cubic-bezier(.18, .7, .25, 1) var(--cup-enter-delay) both;
+}
+.copy-window {
+  display: grid;
+  overflow: hidden;
+  padding: 6px;
+  margin: -6px;
+}
+.copy-window > div { grid-area: 1 / 1; }
+.copy-outgoing,
+.note-outgoing {
+  pointer-events: none;
+  animation: text-rise-out 500ms cubic-bezier(.4, 0, 1, 1) both;
+}
+.copy-incoming h1,
+.note-incoming {
+  animation: text-rise-in 700ms cubic-bezier(.2, .75, .25, 1) 500ms both;
+}
+.copy-incoming p {
+  animation: text-rise-in 700ms cubic-bezier(.2, .75, .25, 1) 580ms both;
+}
+@keyframes flavor-wipe {
+  from { mask-position: 100% 0; }
+  to { mask-position: 0% 0; }
+}
+@keyframes cup-fall {
+  0% { transform: translate(0, 0) rotate(0deg); animation-timing-function: cubic-bezier(.42, 0, .75, .6); }
+  30% { transform: var(--cup-slip); }
+  55% { transform: var(--cup-release); }
+  75% { transform: var(--cup-fall); animation-timing-function: cubic-bezier(.3, .15, .7, .65); }
+  100% { transform: var(--cup-exit); }
+}
+@keyframes cup-arrive {
+  from { transform: var(--cup-enter); }
+  to { transform: translate(0, 0) rotate(0deg); }
+}
+@keyframes text-rise-out {
+  to { transform: translateY(-100%); opacity: 0; }
+}
+@keyframes text-rise-in {
+  from { transform: translateY(110%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.blackberry-piece img {
+  object-fit: contain;
+}
+.note {
+  position: absolute;
+  font-family: var(--font-script), cursive;
+  font-weight: 500;
+  font-size: clamp(64px, 6.4vw, 112px);
+  line-height: 1.15;
+}
+.note-window {
+  display: grid;
+  text-align: center;
+  overflow: hidden;
+  /* Space for the handwritten font's ascenders, descenders and flourishes. */
+  padding: .2em .3em;
+  margin: -.2em -.3em;
+}
+.note-window > span {
+  grid-area: 1 / 1;
+  white-space: nowrap;
+}
+.note-sizer {
+  visibility: hidden;
+  pointer-events: none;
+}
+.note-left {
+  left: 13.5%;
+  top: 26%;
+  transform: rotate(-31deg);
+}
+.note-right {
+  right: 7%;
+  top: 20%;
+  font-size: clamp(60px, 5.5vw, 98px);
+  transform: rotate(22deg);
+}
+.flavor-copy {
+  position: absolute;
+  z-index: 1;
+  left: 4.5%;
+  bottom: 4.6%;
+  width: 33%;
+}
+.flavor-copy h1,
+.flavor-copy .copy-title {
+  margin: 0 0 12px;
+  color: var(--flavor);
+  font-size: clamp(62px, 5.6vw, 98px);
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: -0.055em;
+}
+.flavor-copy p {
+  max-width: 440px;
+  margin: 0;
+  font-size: clamp(19px, 1.72vw, 30px);
+  line-height: 1.07;
+  letter-spacing: -0.035em;
+  text-wrap: pretty;
+}
+.carousel-controls {
+  position: absolute;
+  z-index: 1;
+  right: 4.5%;
+  bottom: 6.5%;
+  display: grid;
+  gap: 15px;
+}
+.arrow-button {
+  width: clamp(72px, 5.5vw, 96px);
+  height: clamp(43px, 3vw, 54px);
+  border: 2px solid #202532;
+  background: #ffffffbc;
+  box-shadow: 0 0 0 2px #2025320a;
+}
+.arrow-button svg {
+  width: 36px;
+  height: 36px;
+}
+.arrow-button:hover {
+  background: #202532;
+  color: white;
+  transform: translateY(-2px);
+}
+.dot-button {
+  height: 24px;
+  width: 24px;
+}
+.dot-button span {
+  width: 7px;
+  height: 7px;
+  border-radius: 100%;
+  background: #c9c9ce;
+  transition: transform 200ms;
+}
+.dot-button.selected {
+  outline: 1px solid var(--dot-color);
+  outline-offset: -3px;
+}
+.dot-button.selected span {
+  background: var(--dot-color);
+  transform: scale(1.15);
+}
+.dot-button:focus-visible {
+  outline: 3px solid #202532;
+  outline-offset: 2px;
+}
+.flavor-dialog {
+  border: 0;
+  max-height: calc(100dvh - 40px);
+}
+.flavor-dialog::backdrop {
+  background: #20253255;
+  backdrop-filter: blur(8px);
+}
+.dialog-flavor:hover {
+  background: #eeeeef;
+}
+.heart-toggle:hover {
+  background: white;
+}
+.skip-link {
+  position: fixed;
+  z-index: 5;
+  top: 8px;
+  left: 8px;
+  padding: 12px 18px;
+  background: white;
+  color: #202532;
+  border-radius: 40px;
+  transform: translateY(-150%);
+}
+.skip-link:focus {
+  transform: translateY(0);
+}
+.image-error {
+  font-size: 14px !important;
+  margin-top: 10px !important;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .copy-enter {
+    animation: copy-in 520ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+  .flavor-dialog[open] {
+    animation: dialog-in 200ms ease both;
+  }
+  @keyframes copy-in {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes dialog-in {
+    from {
+      opacity: 0;
+      transform: translateY(12px) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
+@media (min-width: 768px) and (max-aspect-ratio: 4/3) {
+  .experience {
+    height: max(720px, 100dvh);
+  }
+  .artwork-viewport {
+    bottom: 17%;
+  }
+  .artwork {
+    object-fit: cover;
+    object-position: 53% center;
+  }
+
+  .flavor-copy {
+    bottom: 5%;
+    width: 65%;
+  }
+  .flavor-copy h1,
+  .flavor-copy .copy-title {
+    font-size: 72px;
+  }
+  .flavor-copy p {
+    font-size: 23px;
+  }
+  .note-left {
+    top: 25%;
+    left: 6%;
+  }
+  .note-right {
+    top: 20%;
+    right: 4%;
+  }
+}
+
+@media (max-width: 767px) {
+  .experience {
+    height: auto;
+    min-height: 100dvh;
+  }
+  .site-header {
+    padding: 22px 23px;
+  }
+  .wordmark {
+    font-size: 32px;
+    letter-spacing: -1.7px;
+  }
+  .menu-button {
+    width: 28px;
+    height: 38px;
+  }
+  .menu-button svg {
+    width: 30px;
+    height: 30px;
+  }
+  .favorites-button,
+  .search-button {
+    height: 39px;
+    width: 39px;
+  }
+  .favorites-button svg {
+    width: 22px;
+    height: 22px;
+  }
+  .search-wrap {
+    width: 39px;
+  }
+  .search-form {
+    height: 39px;
+    padding: 0;
+  }
+  .search-form input {
+    width: 0;
+    flex: none;
+    padding: 0;
+  }
+  .search-wrap.is-open {
+    position: absolute;
+    left: 23px;
+    right: 75px;
+    width: auto;
+  }
+  .search-wrap.is-open .search-form {
+    padding-left: 16px;
+    box-shadow: 0 0 0 5px var(--flavor-bg);
+  }
+  .search-wrap.is-open input {
+    flex: 1;
+    width: auto;
+  }
+  .search-results {
+    top: 50px;
+    min-width: 240px;
+  }
+  .flavor-stage {
+    min-height: max(760px, 100dvh);
+    display: flex;
+    flex-direction: column;
+  }
+  .artwork-viewport {
+    position: relative;
+    flex: none;
+    height: clamp(470px, 65dvh, 610px);
+  }
+  .artwork-layer {
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    right: auto;
+    width: 178%;
+    transform: translateX(-52%);
+  }
+  .artwork-layer-paper {
+    left: 0;
+    width: 100%;
+    transform: none;
+  }
+  .blackberry-composition {
+    left: 50%;
+    right: auto;
+    width: 178%;
+    transform: translateX(-52%);
+  }
+
+  .artwork {
+    object-fit: cover;
+    object-position: 53% center;
+  }
+  .note {
+    font-size: clamp(30px, 8vw, 45px);
+  }
+  .note-left {
+    top: 150px;
+    left: 5%;
+    transform: rotate(-28deg);
+  }
+  .note-right {
+    top: 115px;
+    right: 4%;
+    font-size: 28px;
+    transform: rotate(20deg);
+  }
+  .flavor-copy {
+    position: relative;
+    left: auto;
+    bottom: auto;
+    width: 100%;
+    padding: 22px 26px 0;
+  }
+  .flavor-copy h1,
+  .flavor-copy .copy-title {
+    font-size: clamp(48px, 12vw, 76px);
+    margin-bottom: 12px;
+    letter-spacing: -0.055em;
+  }
+  .flavor-copy p {
+    max-width: 350px;
+    font-size: 20px;
+    line-height: 1.22;
+    letter-spacing: -0.025em;
+  }
+  .carousel-controls {
+    position: relative;
+    right: auto;
+    bottom: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 25px 26px 28px;
+    margin-top: auto;
+  }
+  .arrow-button {
+    width: 66px;
+    height: 42px;
+  }
+  .arrow-button svg {
+    width: 31px;
+    height: 31px;
+  }
+  .flavor-dots {
+    gap: 7px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

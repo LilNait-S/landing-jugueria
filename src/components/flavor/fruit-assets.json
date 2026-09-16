@@ -1,0 +1,80 @@
+{
+  "orange": [
+    {
+      "src": "/images/fruits/orange/fruit-1.webp",
+      "ratio": "515 / 523"
+    },
+    {
+      "src": "/images/fruits/orange/fruit-2.webp",
+      "ratio": "469 / 523"
+    },
+    {
+      "src": "/images/fruits/orange/fruit-3.webp",
+      "ratio": "539 / 336"
+    },
+    {
+      "src": "/images/fruits/orange/fruit-4.webp",
+      "ratio": "510 / 507"
+    },
+    {
+      "src": "/images/fruits/orange/fruit-5.webp",
+      "ratio": "500 / 441"
+    },
+    {
+      "src": "/images/fruits/orange/fruit-6.webp",
+      "ratio": "427 / 448"
+    }
+  ],
+  "watermelon": [
+    {
+      "src": "/images/fruits/watermelon/fruit-1.webp",
+      "ratio": "661 / 651"
+    },
+    {
+      "src": "/images/fruits/watermelon/fruit-2.webp",
+      "ratio": "693 / 700"
+    },
+    {
+      "src": "/images/fruits/watermelon/fruit-3.webp",
+      "ratio": "707 / 672"
+    },
+    {
+      "src": "/images/fruits/watermelon/fruit-4.webp",
+      "ratio": "675 / 638"
+    },
+    {
+      "src": "/images/fruits/watermelon/fruit-5.webp",
+      "ratio": "596 / 605"
+    },
+    {
+      "src": "/images/fruits/watermelon/fruit-6.webp",
+      "ratio": "546 / 552"
+    }
+  ],
+  "lime": [
+    {
+      "src": "/images/fruits/lime/fruit-1.webp",
+      "ratio": "605 / 588"
+    },
+    {
+      "src": "/images/fruits/lime/fruit-2.webp",
+      "ratio": "537 / 558"
+    },
+    {
+      "src": "/images/fruits/lime/fruit-3.webp",
+      "ratio": "631 / 374"
+    },
+    {
+      "src": "/images/fruits/lime/fruit-4.webp",
+      "ratio": "622 / 537"
+    },
+    {
+      "src": "/images/fruits/lime/fruit-5.webp",
+      "ratio": "565 / 542"
+    },
+    {
+      "src": "/images/fruits/lime/fruit-6.webp",
+      "ratio": "465 / 524"
+    }
+  ]
+}
